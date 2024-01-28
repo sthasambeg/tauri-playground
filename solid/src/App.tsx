@@ -25,7 +25,6 @@ const [todos, setTodos] = createSignal<Todo[]>([{
   name: "Learn Tauri",
   done: true
 }
-
 ])
 
 function TodoPage() {
@@ -54,11 +53,20 @@ function TodoPage() {
 }
 
 function Todo({ todo }: { todo: Todo }) {
+  function deleteTodo() {
+    setTodos((todos) => todos.filter((t) => t.id !== todo.id))
+  }
+  function toggleTodo() {
+    setTodos((todos) => todos.map((t) => t.id === todo.id ? { ...t, done: !t.done } : t))
+  }
   return (
-    <li class="flex gap-20 items-center">
-      <h2> {todo.done ? "✔️" : "❌"} {todo.name}</h2>
-      <button class="btn btn-error btn-sm">Delete</button>
-    </li>
+    <li class="flex justify-between items-center min-w-[50vw]">
+      <h2 class={`${todo.done ? "line-through" : ""}`} > {todo.done ? "✔️" : "❌"} {todo.name}</h2>
+      <div class="flex gap-2 items-center">
+        <input type="checkbox" class="checkbox" checked={todo.done} onChange={toggleTodo} />
+        <button class="btn btn-error btn-sm" onClick={deleteTodo}>Delete</button>
+      </div>
+    </li >
   )
 }
 
