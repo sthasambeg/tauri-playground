@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config}*/
 
 const skeleton = require("@skeletonlabs/tw-plugin");
-const forms = require("@tailwindcss/forms");
 
 const config = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -10,7 +9,7 @@ const config = {
     extend: {},
   },
 
-  plugins: [skeleton, forms],
+  plugins: [skeleton],
 };
 
 module.exports = config;
