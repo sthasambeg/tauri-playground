@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { For, createSignal } from "solid-js";
 
 
 type Todo = {
@@ -46,7 +46,9 @@ function TodoPage() {
         <button type="submit">Add</button>
       </form>
       <div class="flex flex-col gap-2 pt-10">
-        {todos().map((todo) => <Todo todo={todo} />)}
+        <For each={todos()}>
+          {(todo) => <Todo todo={todo} />}
+        </For>
       </div>
     </main>
   )
