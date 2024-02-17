@@ -1,8 +1,9 @@
 import { For, createSignal } from "solid-js";
+import { createTodo, deleteTodo, getTodos, updateTodo } from "./db";
 
 
-type Todo = {
-  id: string,
+export type Todo = {
+  id: number,
   name: string
   done: boolean
 }
@@ -15,26 +16,22 @@ type HTMLFormEvent = Event & {
 };
 
 
-const [todos, setTodos] = createSignal<Todo[]>([{
-  id: crypto.randomUUID(),
-  name: "Learn Solid",
-  done: false
-},
-{
-  id: crypto.randomUUID(),
-  name: "Learn Tauri",
-  done: true
+const [todos, setTodos] = createSignal<Todo[]>(await getTodos())
+
+async function refreshTodos() {
+  const todos = await getTodos()
+  setTodos(todos)
 }
-])
 
 function TodoPage() {
-  function handleSubmit(e: HTMLFormEvent) {
+  async function handleSubmit(e: HTMLFormEvent) {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const formData = new FormData(target);
     const name = formData.get("name")?.toString();
     if (name) {
-      setTodos((todos) => [...todos, { id: crypto.randomUUID(), name, done: false }])
+      await createTodo(name)
+      await refreshTodos()
     }
   }
 
@@ -55,18 +52,20 @@ function TodoPage() {
 }
 
 function Todo({ todo }: { todo: Todo }) {
-  function deleteTodo() {
-    setTodos((todos) => todos.filter((t) => t.id !== todo.id))
+  async function _deleteTodo() {
+    deleteTodo(todo.id)
+    await refreshTodos()
   }
-  function toggleTodo() {
-    setTodos((todos) => todos.map((t) => t.id === todo.id ? { ...t, done: !t.done } : t))
+  async function toggleTodo() {
+    updateTodo(todo.id, !todo.done)
+    await refreshTodos()
   }
   return (
     <li class="flex justify-between items-center min-w-[50vw]">
       <h2 class={`${todo.done ? "line-through" : ""}`} > {todo.done ? "✔️" : "❌"} {todo.name}</h2>
       <div class="flex gap-2 items-center">
         <input type="checkbox" class="checkbox" checked={todo.done} onChange={toggleTodo} />
-        <button class="btn btn-error btn-sm" onClick={deleteTodo}>Delete</button>
+        <button class="btn btn-error btn-sm" onClick={_deleteTodo}>Delete</button>
       </div>
     </li >
   )
