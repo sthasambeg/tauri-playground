@@ -11,7 +11,11 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.5.2"
+    "@tauri-apps/api": "^1.5.2",
+    "lucide": "^0.344.0",
+    "lucide-svelte": "^0.344.0",
+    "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#v1",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1"
   },
   "devDependencies": {
     "@skeletonlabs/skeleton": "^2.7.1",
