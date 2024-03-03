@@ -4,12 +4,15 @@ const skeleton = require("@skeletonlabs/tw-plugin");
 
 const config = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
-
   theme: {
     extend: {},
   },
-
-  plugins: [skeleton],
+  darkMode: "class",
+  plugins: [
+    skeleton.skeleton({
+      themes: { preset: ["skeleton", "modern", "vintage"] },
+    }),
+  ],
 };
 
 module.exports = config;
